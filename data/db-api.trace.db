@@ -1,0 +1,3 @@
+2025-03-18 12:59:26.491619-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "CRM CHARACTER VARYING(10)": "'testebdababeabe' (15)"; SQL statement:
+insert into medico (crm,especialidade,nome,id) values (?,?,?,?) [22001-232]
