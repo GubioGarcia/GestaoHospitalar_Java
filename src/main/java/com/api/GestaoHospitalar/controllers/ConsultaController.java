@@ -25,14 +25,14 @@ public class ConsultaController {
         return consultaService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/agendarConsulta")
     public Consulta saveConsulta(@RequestBody ConsultaDTO consulta) {
         return consultaService.save(consulta);
     }
 
-    @PutMapping
-    public Consulta updateConsulta(@RequestBody Consulta consulta) {
-        return consultaService.update(consulta);
+    @PutMapping("/cancelarConsulta/{id}")
+    public void cancelarConsulta(@PathVariable Integer id) {
+        this.consultaService.cancelarConsulta(id);
     }
 
     @DeleteMapping("/{id}")

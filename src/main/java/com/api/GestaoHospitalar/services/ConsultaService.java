@@ -4,6 +4,7 @@ import com.api.GestaoHospitalar.dto.ConsultaDTO;
 import com.api.GestaoHospitalar.models.Consulta;
 import com.api.GestaoHospitalar.models.Medico;
 import com.api.GestaoHospitalar.models.Paciente;
+import com.api.GestaoHospitalar.models.StatusConsulta;
 import com.api.GestaoHospitalar.repositories.ConsultaRepository;
 import com.api.GestaoHospitalar.repositories.MedicoRepository;
 import com.api.GestaoHospitalar.repositories.PacienteRepository;
@@ -51,10 +52,12 @@ public class ConsultaService {
         return this.consultaRepository.save(consulta);
     }
 
-    public Consulta update(Consulta consulta) {
-        validarDisponibilidadeHorarioMedico(consulta.getMedico(), consulta.getData(), consulta.getHorario());
-        validarDisponibilidadeHorarioPaciente(consulta.getPaciente(), consulta.getData(), consulta.getHorario());
-        return this.consultaRepository.save(consulta);
+    public void cancelarConsulta(Integer id) {
+        Consulta consulta = this.consultaRepository.findById(id).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+        if (consulta.getStatus() != StatusConsulta.CANCELADA)
+            consulta.setStatus(StatusConsulta.CANCELADA);
+
+        this.consultaRepository.save(consulta);
     }
 
     public void delete(Integer id) {
