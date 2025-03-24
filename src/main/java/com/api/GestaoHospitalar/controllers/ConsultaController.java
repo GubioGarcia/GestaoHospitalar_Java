@@ -30,9 +30,14 @@ public class ConsultaController {
         return consultaService.save(consulta);
     }
 
-    @PutMapping("/cancelarConsulta/{id}")
-    public void cancelarConsulta(@PathVariable Integer id) {
-        this.consultaService.cancelarConsulta(id);
+    @PutMapping("/cancelarConsulta/{idConsulta}")
+    public void cancelarConsulta(@PathVariable Integer idConsulta) {
+        this.consultaService.cancelarConsulta(idConsulta);
+    }
+
+    @PutMapping("/reagendarConsulta/{idConsulta}")
+    public void cancelarConsulta(@PathVariable Integer idConsulta, @RequestBody ConsultaDTO consultaDto) {
+        this.consultaService.reagendarConsulta(consultaDto, idConsulta);
     }
 
     @DeleteMapping("/{id}")

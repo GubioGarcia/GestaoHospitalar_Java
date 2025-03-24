@@ -60,6 +60,27 @@ public class ConsultaService {
         this.consultaRepository.save(consulta);
     }
 
+    public Consulta reagendarConsulta(ConsultaDTO consultaDto, Integer id)
+    {
+        Consulta consulta = this.consultaRepository.findById(id).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+
+        consulta.setData(LocalDate.parse(consultaDto.getData(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        consulta.setHorario(LocalTime.parse(consultaDto.getHorario(), DateTimeFormatter.ofPattern("HH:mm:ss")));
+        consulta.setStatus(consultaDto.getStatus());
+
+        Medico medico = medicoRepository.findById(consultaDto.getMedicoId());
+        if (medico == null) throw new RuntimeException("Médico não encontrado.");
+        consulta.setMedico(medico);
+
+        Paciente paciente = pacienteRepository.findById(consultaDto.getPacienteId());
+        if (paciente == null) throw new RuntimeException("Paciente não encontrado.");
+        consulta.setPaciente(paciente);
+
+        validarDisponibilidadeHorarioMedico(consulta.getMedico(), consulta.getData(), consulta.getHorario());
+        validarDisponibilidadeHorarioPaciente(consulta.getPaciente(), consulta.getData(), consulta.getHorario());
+        return this.consultaRepository.save(consulta);
+    }
+
     public void delete(Integer id) {
         this.consultaRepository.deleteById(id);
     }
